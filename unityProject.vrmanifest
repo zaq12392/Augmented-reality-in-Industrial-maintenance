@@ -1,0 +1,16 @@
+{
+  "source": "Unity",
+  "applications": [
+    {
+      "app_key": "application.generated.unity.augmentedrealityinindustrialmaintenance.exe",
+      "launch_type": "url",
+      "url": "steam://launch/",
+      "action_manifest_path": "C:\\Users\\B20_PC3\\Desktop\\DAN\\Augmented-reality-in-Industrial-maintenance\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "strings": {
+        "en_us": {
+          "name": "Augmented-reality-in-Industrial-maintenance [Testing]"
+        }
+      }
+    }
+  ]
+}
