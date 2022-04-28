@@ -18,6 +18,12 @@ public class GetCamera : MonoBehaviour
     {
         deviceLengh = WebCamTexture.devices.Length;   //取得裝置數量
         Debug.Log("camera數量 : " + deviceLengh);
+        string deviceName;
+        for ( int i = 0; i < WebCamTexture.devices.Length; i++)
+        {
+            deviceName = WebCamTexture.devices[i].name;
+            Debug.Log("Name" + i  + " " + deviceName);
+        }
         getTargetCamera();
     }
 
@@ -73,7 +79,7 @@ public class GetCamera : MonoBehaviour
         {
             for (int i = 0; i < WebCamTexture.devices.Length; i++)  
             {
-                if (WebCamTexture.devices[i].name.Contains("Streamer")) //找到名字含有("Streamer")的相機
+                if (WebCamTexture.devices[i].name.Contains("Steamer")) //找到名字含有("XXX")的相機
                 {
                     WebCamDevice device = WebCamTexture.devices[i];
                     webCamTexture = new WebCamTexture(device.name);
