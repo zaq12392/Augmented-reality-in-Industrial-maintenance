@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Android;
 using UnityEngine.UI;
+using OpenCVForUnity;
+using OpenCVForUnity.CoreModule;
+using OpenCVForUnity.UnityUtils;
+using System;
 
 public class GetCamera : MonoBehaviour
 {
@@ -13,9 +17,13 @@ public class GetCamera : MonoBehaviour
     WebCamTexture webCamTexture;
     public RawImage forDisplay;     //用ui的RawImage來顯示相機畫面
 
+    public Mat mat;
+    public Texture2D tex;
+    private static DateTime lastSendTime = DateTime.Now;
     // Start is called before the first frame update
     void Start()
     {
+        forDisplay = GameObject.Find("Canvas/AverMediaCamera").GetComponent<RawImage>();
         deviceLengh = WebCamTexture.devices.Length;   //取得裝置數量
         Debug.Log("camera數量 : " + deviceLengh);
         string deviceName;
@@ -25,53 +33,16 @@ public class GetCamera : MonoBehaviour
             Debug.Log("Name" + i  + " " + deviceName);
         }
         getTargetCamera();
+        tex = new Texture2D(webCamTexture.width, webCamTexture.height);
+        mat = new Mat(tex.height, tex.width, CvType.CV_8UC4);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+       WarpingCamera();
     }
 
-
-    //開啟相機
-    public void SwitchOnAndOff()
-    {
-        if (webCamTexture != null)
-        {
-            StopCamera();
-        }
-        else
-        {
-            WebCamDevice device = WebCamTexture.devices[cameraIndex];
-            webCamTexture = new WebCamTexture(device.name);
-            forDisplay.texture = webCamTexture;
-            webCamTexture.Play();
-            Debug.Log("current camera : " + device.name);
-        }
-    }
-    //停用相機
-    private void StopCamera()
-    {
-        forDisplay.texture = null;
-        webCamTexture.Stop();
-        webCamTexture = null;
-    }
-    //切換不同相機
-    public void SwitchCamera()
-    {
-        if(WebCamTexture.devices.Length > 0)
-        {
-            cameraIndex += 1;
-            cameraIndex %= WebCamTexture.devices.Length;
-
-            if(webCamTexture != null)
-            {
-                StopCamera();
-                SwitchOnAndOff();
-            }
-        }
-    }
 
     public void getTargetCamera()   //用相機名字找相機
     {
@@ -79,15 +50,30 @@ public class GetCamera : MonoBehaviour
         {
             for (int i = 0; i < WebCamTexture.devices.Length; i++)  
             {
-                if (WebCamTexture.devices[i].name.Contains("Steamer")) //找到名字含有("XXX")的相機
+                if (WebCamTexture.devices[i].name.Contains("Streamer")) //找到名字含有("XXX")的相機
                 {
                     WebCamDevice device = WebCamTexture.devices[i];
                     webCamTexture = new WebCamTexture(device.name);
-                    forDisplay.texture = webCamTexture;
                     webCamTexture.Play();
                     Debug.Log("current camera : " + device.name);
                 }
             }
+        }
+    }
+
+    public void WarpingCamera()
+    {
+        TimeSpan timeInterval = DateTime.Now - lastSendTime;     //避免畫面更新太快
+        if (timeInterval.TotalMilliseconds > 250 && webCamTexture.didUpdateThisFrame)
+        {
+            //webCamTexture轉 Texture2D
+            tex.SetPixels32(webCamTexture.GetPixels32());  
+            tex.Apply();
+            Utils.texture2DToMat(tex, mat);  //2D to Mat
+            
+            Utils.matToTexture2D(mat, tex);  //Mat to 2D
+            //顯示
+            forDisplay.texture = tex;
         }
     }
 }
