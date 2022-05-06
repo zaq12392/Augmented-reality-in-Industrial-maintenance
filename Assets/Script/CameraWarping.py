@@ -9,6 +9,8 @@ import cv2
 import numpy as np
 import time
 
+
+
 def filter_out_red(src_frame):
     if src_frame is not None:
         (h,w,c) = src_frame.shape
@@ -24,6 +26,7 @@ def filter_out_red(src_frame):
         for i in range (int(h/2) - 1):
             for j in range (int(w/2) - 1):
                 if mask[i][j] !=0:
+                    print(i,j,mask[i][j])
                     RedPoint.append([i,j])
                     flag = 1
                     break
@@ -34,6 +37,7 @@ def filter_out_red(src_frame):
         for i in range(int(h/2) - 1):
             for j in range (int(w/2) - 1, w):
                 if mask[i][j] !=0:
+                    print(i,j,mask[i][j])
                     RedPoint.append([i,j])
                     flag = 1
                     break
@@ -44,6 +48,7 @@ def filter_out_red(src_frame):
         for i in range(int(h/2) - 1, h):
             for j in range (int(w/2) - 1):
                 if mask[i][j] !=0:
+                    print(i,j,mask[i][j])
                     RedPoint.append([i,j])
                     flag = 1
                     break
@@ -54,6 +59,7 @@ def filter_out_red(src_frame):
         for i in range(int(h/2) - 1, h):
             for j in range (int(w/2) - 1, w):
                 if mask[i][j] !=0:
+                    print(i,j,mask[i][j])
                     RedPoint.append([i,j])
                     flag = 1
                     break
@@ -66,23 +72,27 @@ def filter_out_red(src_frame):
 
 
 
-input_Path = "C:\\Users\\B20_PC3\\Desktop\\DAN\\Augmented-reality-in-Industrial-maintenance\\Assets\\Resources\\"
-output_Path = "C:\\Users\\B20_PC3\\Desktop\\DAN\\Augmented-reality-in-Industrial-maintenance\\Assets\\Resources\\OutCamera.jpg"
+# Rframe = filter_out_red(src)
+# print(RedPoint)
+input_Path = "E:\\Augmented-reality-in-Industrial-maintenance\\Assets\\Resources\\"
+output_Path = "E:\\Augmented-reality-in-Industrial-maintenance\\Assets\\Resources\\OutCamera.jpg"
 src = cv2.imread(input_Path + "Camera.jpg", 1)
-(h,w,c) = src.shape
-RedPoint  = [] #放找到紅點的座標
-Rframe = filter_out_red(src)
-print(RedPoint)
+while(1):
+    try:
+        src = cv2.imread(input_Path + "Camera.jpg", 1)
+        (h,w,c) = src.shape
+        RedPoint  = [] #放找到紅點的座標
+        srcPoint = np.float32([[0, 0],[0, h],[w, h]])
+        AffinePoint = np.float32([[224, 37], [284, 464], [474, 458]])
+        
+        
+        M = cv2.getAffineTransform(AffinePoint ,srcPoint)
+        Affinedst = cv2.warpAffine(src,M,(w, h))
+        cv2.imwrite(output_Path, Affinedst)
+        time.sleep(1/10)
+    except:
+        time.sleep(1/60)
 
-if len(RedPoint) >= 3:
-    srcPoint = np.float32([[0, 0],[0, h],[w, h]])
-    AffinePoint = np.float32([RedPoint[0], RedPoint[1], RedPoint[3]])
-    M = cv2.getAffineTransform(AffinePoint ,srcPoint)
-    Affinedst = cv2.warpAffine(src,M,(w, h))
-    cv2.imwrite(output_Path, Affinedst)
-#cv2.imshow("R", Rframe)
-cv2.waitKey(0)
-time.sleep(0.1) 
 
 
 

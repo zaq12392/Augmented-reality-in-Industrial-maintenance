@@ -10,6 +10,7 @@ using System;
 using OpenCVForUnity.ImgprocModule;
 using OpenCVForUnity.ImgcodecsModule;
 using System.Diagnostics;
+using System.IO;
 
 public class GetCamera : MonoBehaviour
 {
@@ -24,12 +25,14 @@ public class GetCamera : MonoBehaviour
     private Mat OutMat;
     private Texture2D tex;
     private Texture2D OutTex;
+    private Texture2D pre_OutTex;
     private static DateTime lastSendTime = DateTime.Now;
-
-    string sArguments = @"unitytest.py";  //python檔的名稱
+    public int FPS;
+    string sArguments = @"CameraWarping.py";  //python檔的名稱
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = FPS;
         forDisplay = GameObject.Find("Canvas/AverMediaCamera").GetComponent<RawImage>();
         deviceLengh = WebCamTexture.devices.Length;   //取得裝置數量
         UnityEngine.Debug.Log("camera數量 : " + deviceLengh);
@@ -70,7 +73,8 @@ public class GetCamera : MonoBehaviour
         }
     }
 
-    public void WarpingCamera()
+    
+public void WarpingCamera()
     {
         TimeSpan timeInterval = DateTime.Now - lastSendTime;     //避免畫面更新太快
         if (timeInterval.TotalMilliseconds > 250 && webCamTexture.didUpdateThisFrame)
@@ -82,20 +86,35 @@ public class GetCamera : MonoBehaviour
             //顯示
             //BGR to RGB
             Imgproc.cvtColor(mat, mat, Imgproc.COLOR_BGR2RGB);
-            Imgcodecs.imwrite(@"C:\Users\B20_PC3\Desktop\DAN\Augmented-reality-in-Industrial-maintenance\Assets\Resources\Camera.jpg", mat);
+            Imgcodecs.imwrite(@"E:\Augmented-reality-in-Industrial-maintenance\Assets\Resources\Camera.jpg", mat);
             //RunPythonScript(sArguments, "-u");
-            OutMat = Imgcodecs.imread(@"C:\Users\B20_PC3\Desktop\DAN\Augmented-reality-in-Industrial-maintenance\Assets\Resources\OutCamera.jpg", 1);
+            OutMat = Imgcodecs.imread(@"E:\Augmented-reality-in-Industrial-maintenance\Assets\Resources\OutCamera.jpg", 1);
             Imgproc.cvtColor(OutMat, OutMat, Imgproc.COLOR_BGR2RGB);
             Utils.matToTexture2D(OutMat, OutTex);
-            forDisplay.texture = tex;
+            UnityEngine.Debug.Log(OutTex.GetPixel(OutTex.width, OutTex.height)[0]);
+            if (OutTex.GetPixel(OutTex.width, OutTex.height)[0] > 0.6f)
+            {
+                UnityEngine.Debug.Log("is empty");
+                //forDisplay.texture = pre_OutTex;
+                forDisplay.texture = pre_OutTex;
+            }
+            else
+            {
+                
+                forDisplay.texture = OutTex;
+                pre_OutTex = OutTex;
+            }
+            
         }
     }
+
+
 
     public static void RunPythonScript(string sArgName, string args = "")
     {
         Process p = new Process();
         //python的腳本路徑
-        string path = @"C:\Users\B20_PC3\Desktop\DAN\Augmented-reality-in-Industrial-maintenance\Assets\Script\" + sArgName;
+        string path = @"E:\Augmented-reality-in-Industrial-maintenance\Assets\Script\" + sArgName;
         string sArguments = path;
 
         //(注意:用的話需要換成自己的)沒有配環境變量的話，可以像我這樣寫python.exe的絕對路徑
