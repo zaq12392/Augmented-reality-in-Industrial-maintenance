@@ -11,6 +11,9 @@ using OpenCVForUnity.ImgprocModule;
 using OpenCVForUnity.ImgcodecsModule;
 using System.Diagnostics;
 using System.IO;
+using System.Drawing;
+using System.Reflection;
+
 
 public class GetCamera : MonoBehaviour
 {
@@ -25,7 +28,6 @@ public class GetCamera : MonoBehaviour
     private Mat OutMat;
     private Texture2D tex;
     private Texture2D OutTex;
-    private Texture2D pre_OutTex;
     private static DateTime lastSendTime = DateTime.Now;
     public int FPS;
     string sArguments = @"CameraWarping.py";  //python檔的名稱
@@ -74,7 +76,7 @@ public class GetCamera : MonoBehaviour
     }
 
     
-public void WarpingCamera()
+    public void WarpingCamera()
     {
         TimeSpan timeInterval = DateTime.Now - lastSendTime;     //避免畫面更新太快
         if (timeInterval.TotalMilliseconds > 250 && webCamTexture.didUpdateThisFrame)
@@ -85,30 +87,47 @@ public void WarpingCamera()
             Utils.texture2DToMat(tex, mat);  //2D to Mat
             //顯示
             //BGR to RGB
-            Imgproc.cvtColor(mat, mat, Imgproc.COLOR_BGR2RGB);
-            Imgcodecs.imwrite(@"E:\Augmented-reality-in-Industrial-maintenance\Assets\Resources\Camera.jpg", mat);
+            //Imgproc.cvtColor(mat, mat, Imgproc.COLOR_BGR2RGB);
+            //Imgcodecs.imwrite(@"E:\Augmented-reality-in-Industrial-maintenance\Assets\Resources\Camera.jpg", mat);
             //RunPythonScript(sArguments, "-u");
-            OutMat = Imgcodecs.imread(@"E:\Augmented-reality-in-Industrial-maintenance\Assets\Resources\OutCamera.jpg", 1);
-            Imgproc.cvtColor(OutMat, OutMat, Imgproc.COLOR_BGR2RGB);
-            Utils.matToTexture2D(OutMat, OutTex);
-            UnityEngine.Debug.Log(OutTex.GetPixel(OutTex.width, OutTex.height)[0]);
-            if (OutTex.GetPixel(OutTex.width, OutTex.height)[0] > 0.6f)
-            {
-                UnityEngine.Debug.Log("is empty");
-                //forDisplay.texture = pre_OutTex;
-                forDisplay.texture = pre_OutTex;
-            }
-            else
-            {
-                
-                forDisplay.texture = OutTex;
-                pre_OutTex = OutTex;
-            }
+            //OutMat = Imgcodecs.imread(@"E:\Augmented-reality-in-Industrial-maintenance\Assets\Resources\OutCamera.jpg", 1);
+            //Imgproc.cvtColor(OutMat, OutMat, Imgproc.COLOR_BGR2RGB);
+            //Utils.matToTexture2D(OutMat, OutTex);
+            Mat output = new Mat(tex.height, tex.width, CvType.CV_8UC4);
+            output = ImageWarping(mat);
+            Utils.matToTexture2D(output, OutTex);
+            forDisplay.texture = OutTex;
             
         }
     }
 
+    public Mat ImageWarping(Mat srcImage)   //影像扭曲
+    {
+        Mat result = new Mat(tex.height, tex.width, CvType.CV_8UC4);   //做一個要輸出的Mat
+        //用opencvUnity的方式宣告 point
+        //src 是顯示畫面的角落 src1 左上 src2 左下 src3 右下 
+        OpenCVForUnity.CoreModule.Point src1 = new OpenCVForUnity.CoreModule.Point(0, 0);
+        OpenCVForUnity.CoreModule.Point src2 = new OpenCVForUnity.CoreModule.Point(0, tex.height);
+        OpenCVForUnity.CoreModule.Point src3 = new OpenCVForUnity.CoreModule.Point(tex.width, tex.height);
+        OpenCVForUnity.CoreModule.Point[] src_P = { src1, src2, src3 };
 
+        //dst 是電腦的點  dst1 左上  dst2 左下  dst3 右下
+        OpenCVForUnity.CoreModule.Point dst1 = new OpenCVForUnity.CoreModule.Point(234, 34);
+        OpenCVForUnity.CoreModule.Point dst2 = new OpenCVForUnity.CoreModule.Point(200, 428);
+        OpenCVForUnity.CoreModule.Point dst3 = new OpenCVForUnity.CoreModule.Point(359, 438);
+        OpenCVForUnity.CoreModule.Point[] dst_P = { dst1, dst2, dst3 };
+
+        //getAffineTransform要吃MatOfPoint2f的格式 所以要把剛剛的OpencvUnity的Point包起來丟進去
+        MatOfPoint2f src = new MatOfPoint2f(src_P);
+        MatOfPoint2f dst = new MatOfPoint2f(dst_P);
+        Mat affine_M = new Mat();
+        affine_M = Imgproc.getAffineTransform(dst, src);
+        OpenCVForUnity.CoreModule.Size size = new OpenCVForUnity.CoreModule.Size(tex.width, tex.height);
+        Imgproc.warpAffine(srcImage, result, affine_M, size);
+        Imgcodecs.imwrite(@"E:\Augmented-reality-in-Industrial-maintenance\Assets\Resources\srcimage.jpg", srcImage);
+        Imgcodecs.imwrite(@"E:\Augmented-reality-in-Industrial-maintenance\Assets\Resources\warpedimage.jpg", result);
+        return result;
+    }
 
     public static void RunPythonScript(string sArgName, string args = "")
     {
