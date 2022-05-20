@@ -22,6 +22,7 @@ public class SystemControler : MonoBehaviour
         {
             PC.SetActive(false);
             WebCam.SetActive(false);
+            WebCam_Mid.SetActive(false);
         }
 
         if (Input.GetKeyUp(KeyCode.W)) // ¥ô°È°T®§ + WebCam

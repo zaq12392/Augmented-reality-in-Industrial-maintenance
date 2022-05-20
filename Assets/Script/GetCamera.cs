@@ -36,7 +36,7 @@ public class GetCamera : MonoBehaviour
     {
         Application.targetFrameRate = FPS;
         forDisplay = GameObject.Find("Canvas/AverMediaCamera").GetComponent<RawImage>();
-        //forDisplay_1 = GameObject.Find("Canvas/AverMediaCamera_1").GetComponent<RawImage>();
+        forDisplay_1 = GameObject.Find("Canvas/AverMediaCamera_1").GetComponent<RawImage>();
         deviceLengh = WebCamTexture.devices.Length;   //取得裝置數量
         UnityEngine.Debug.Log("camera數量 : " + deviceLengh);
         string deviceName;
@@ -99,7 +99,7 @@ public class GetCamera : MonoBehaviour
             output = ImageWarping(mat);
             Utils.matToTexture2D(output, OutTex);
             forDisplay.texture = OutTex;
-            //forDisplay_1.texture = OutTex;
+            forDisplay_1.texture = OutTex;
 
         }
     }
