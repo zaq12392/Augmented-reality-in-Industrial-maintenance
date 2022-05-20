@@ -44,7 +44,7 @@ public class EyeTrackerTimer : MonoBehaviour, IGazeFocusable
 
     private void OnApplicationQuit()  //結束時把位置輸出成CSV
     {
-        string filepath = @"C:\Users\B20_PC3\Desktop\DAN\Augmented-reality-in-Industrial-maintenance\Assets\EyeTrackerTimer\" + this.name + ".csv";  //檔案位置在桌面的UserPath裡面
+        string filepath = @"E:\GitHub\Augmented-reality-in-Industrial-maintenance\Assets\EyeTrackerTimer\" + this.name + ".csv";  //檔案位置在桌面的UserPath裡面
         print("writeCSV");
         WriteToCSV(filepath, _timer);
         print("end game");
