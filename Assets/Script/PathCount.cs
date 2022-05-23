@@ -17,22 +17,21 @@ public class PathCount : MonoBehaviour
     {
         prePos = gameObject.transform.position;
         users.Add(new PositionData() { X = prePos.x, Z = prePos.z }); //初始位置放進LIST
+        //每0.3秒計一次
+        InvokeRepeating("Count", 0.1f, 0.3f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //有位移才紀錄位置
-        endtime = Time.time;
-        aftPos = gameObject.transform.position;
-        if(aftPos != prePos)
-        {
-            users.Add(new PositionData() { X = aftPos.x, Z = aftPos.z });
-            prePos = aftPos;
-            print("list length" + users.Count);
-        }
         
-  
+
+    }
+
+    void Count()
+    {
+        aftPos = gameObject.transform.position;
+        users.Add(new PositionData() { X = aftPos.x, Z = aftPos.z });
     }
 
     class PositionData
@@ -65,7 +64,7 @@ public class PathCount : MonoBehaviour
         Debug.Log("endtime" + endtime.ToString());
         //string filename = "Path" + endtime.ToString() + ".csv";
         users.Add(new PositionData() { X = Pos.x, Z = Pos.z });
-        string filepath = @"C:\Users\3700X\Desktop\UserPath\Path.csv";  //檔案位置在桌面的UserPath裡面
+        string filepath = @"E:\GitHub\Augmented-reality-in-Industrial-maintenance\Assets\HandPath\" + this.name + ".csv";  //檔案位置在桌面的UserPath裡面
         print("writeCSV");
         WriteToCSV(filepath, users);
         print("end game");
