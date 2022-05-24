@@ -66,7 +66,7 @@ public class GetCamera : MonoBehaviour
         {
             for (int i = 0; i < WebCamTexture.devices.Length; i++)
             {
-                if (WebCamTexture.devices[i].name.Contains("Streamer")) //找到名字含有("XXX")的相機
+                if (WebCamTexture.devices[i].name.Contains("PW310")) //找到名字含有("XXX")的相機
                 {
                     WebCamDevice device = WebCamTexture.devices[i];
                     webCamTexture = new WebCamTexture(device.name);
