@@ -5,6 +5,8 @@ using UnityEngine;
 public class WireControl : MonoBehaviour
 {
     public GameObject Itself;
+    public GameObject Hand;
+
     // Start is called before the first frame update
     void Start()
     {
