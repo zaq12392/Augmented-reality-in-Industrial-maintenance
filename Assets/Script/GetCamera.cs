@@ -113,11 +113,11 @@ public class GetCamera : MonoBehaviour
         OpenCVForUnity.CoreModule.Point src2 = new OpenCVForUnity.CoreModule.Point(0, tex.height);
         OpenCVForUnity.CoreModule.Point src3 = new OpenCVForUnity.CoreModule.Point(tex.width, tex.height);
         OpenCVForUnity.CoreModule.Point[] src_P = { src1, src2, src3 };
-
-        //dst 是電腦的點  dst1 左上  dst2 左下  dst3 右下
-        OpenCVForUnity.CoreModule.Point dst1 = new OpenCVForUnity.CoreModule.Point(234, 34);
-        OpenCVForUnity.CoreModule.Point dst2 = new OpenCVForUnity.CoreModule.Point(200, 428);
-        OpenCVForUnity.CoreModule.Point dst3 = new OpenCVForUnity.CoreModule.Point(359, 438);
+         
+        //dst 是電腦的點  dst1 左上  dst2 左下  dst3 右下     座標跟小畫家一樣就好 不用XY互換
+        OpenCVForUnity.CoreModule.Point dst1 = new OpenCVForUnity.CoreModule.Point(1, 129);
+        OpenCVForUnity.CoreModule.Point dst2 = new OpenCVForUnity.CoreModule.Point(40, 398);
+        OpenCVForUnity.CoreModule.Point dst3 = new OpenCVForUnity.CoreModule.Point(140, 423);
         OpenCVForUnity.CoreModule.Point[] dst_P = { dst1, dst2, dst3 };
 
         //getAffineTransform要吃MatOfPoint2f的格式 所以要把剛剛的OpencvUnity的Point包起來丟進去
@@ -127,8 +127,8 @@ public class GetCamera : MonoBehaviour
         affine_M = Imgproc.getAffineTransform(dst, src);
         OpenCVForUnity.CoreModule.Size size = new OpenCVForUnity.CoreModule.Size(tex.width, tex.height);
         Imgproc.warpAffine(srcImage, result, affine_M, size);
-        Imgcodecs.imwrite(@"E:\Augmented-reality-in-Industrial-maintenance\Assets\Resources\srcimage.jpg", srcImage);
-        Imgcodecs.imwrite(@"E:\Augmented-reality-in-Industrial-maintenance\Assets\Resources\warpedimage.jpg", result);
+        Imgcodecs.imwrite(@"E:\GitHub\Augmented-reality-in-Industrial-maintenance\Assets\Resources\srcimage.jpg", srcImage);
+        Imgcodecs.imwrite(@"E:\GitHub\Augmented-reality-in-Industrial-maintenance\Assets\Resources\warpedimage.jpg", result);
         return result;
     }
 }
