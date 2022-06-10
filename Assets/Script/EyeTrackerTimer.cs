@@ -6,6 +6,8 @@ using System.IO;
 
 public class EyeTrackerTimer : MonoBehaviour, IGazeFocusable
 {
+
+    public int flag = 0; // 用來控制系統開始的FLAG
     public float _timer = 0;
     // Start is called before the first frame update
     void Start()
@@ -15,7 +17,10 @@ public class EyeTrackerTimer : MonoBehaviour, IGazeFocusable
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKey(KeyCode.A))
+        {
+            flag = 1;
+        }
     }
     void timer1()  //每0.1秒為單位計時
     {
@@ -24,13 +29,16 @@ public class EyeTrackerTimer : MonoBehaviour, IGazeFocusable
 
     public void GazeFocusChanged(bool hasFocus)  //跟IGazeFocusable 搭配的方程式  可以偵測物件有沒有正在被注視
     {
-        if (hasFocus)   //被注視
+        if(flag == 1)
         {
-            InvokeRepeating("timer1", 0.1f, 0.1f);  //計時器    InvokeRepeating(方法名,幾秒開始計,每幾秒計一次)
-        } 
-        else  //沒注視
-        {
-            CancelInvoke();
+            if (hasFocus)   //被注視
+            {
+                InvokeRepeating("timer1", 0.1f, 0.1f);  //計時器    InvokeRepeating(方法名,幾秒開始計,每幾秒計一次)
+            }
+            else  //沒注視
+            {
+                CancelInvoke();
+            }
         }
     }
     void WriteToCSV(string FilePath , float time) //寫CSV

@@ -18,13 +18,16 @@ public class PathCount : MonoBehaviour
         prePos = gameObject.transform.position;
         users.Add(new PositionData() { X = prePos.x, Y = aftPos.y, Z = prePos.z }); ; //初始位置放進LIST
         //每0.3秒計一次
-        InvokeRepeating("Count", 0.1f, 0.3f);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKey(KeyCode.A)) //按下A開始紀錄
+        {
+            InvokeRepeating("Count", 0.1f, 0.3f);
+        }
 
     }
 

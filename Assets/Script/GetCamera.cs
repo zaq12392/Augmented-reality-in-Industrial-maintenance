@@ -35,7 +35,7 @@ public class GetCamera : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = FPS;
-        forDisplay = GameObject.Find("Canvas/AverMediaCamera").GetComponent<RawImage>();
+        //forDisplay = GameObject.Find("Canvas/AverMediaCamera").GetComponent<RawImage>();
         forDisplay_1 = GameObject.Find("Canvas/AverMediaCamera_1").GetComponent<RawImage>();
         deviceLengh = WebCamTexture.devices.Length;   //取得裝置數量
         UnityEngine.Debug.Log("camera數量 : " + deviceLengh);
@@ -98,7 +98,6 @@ public class GetCamera : MonoBehaviour
             Mat output = new Mat(tex.height, tex.width, CvType.CV_8UC4);
             output = ImageWarping(mat);
             Utils.matToTexture2D(output, OutTex);
-            forDisplay.texture = OutTex;
             forDisplay_1.texture = OutTex;
 
         }
@@ -115,9 +114,9 @@ public class GetCamera : MonoBehaviour
         OpenCVForUnity.CoreModule.Point[] src_P = { src1, src2, src3 };
          
         //dst 是電腦的點  dst1 左上  dst2 左下  dst3 右下     座標跟小畫家一樣就好 不用XY互換
-        OpenCVForUnity.CoreModule.Point dst1 = new OpenCVForUnity.CoreModule.Point(1, 129);
-        OpenCVForUnity.CoreModule.Point dst2 = new OpenCVForUnity.CoreModule.Point(40, 398);
-        OpenCVForUnity.CoreModule.Point dst3 = new OpenCVForUnity.CoreModule.Point(140, 423);
+        OpenCVForUnity.CoreModule.Point dst1 = new OpenCVForUnity.CoreModule.Point(194, 29);
+        OpenCVForUnity.CoreModule.Point dst2 = new OpenCVForUnity.CoreModule.Point(74, 312);
+        OpenCVForUnity.CoreModule.Point dst3 = new OpenCVForUnity.CoreModule.Point(112, 451);
         OpenCVForUnity.CoreModule.Point[] dst_P = { dst1, dst2, dst3 };
 
         //getAffineTransform要吃MatOfPoint2f的格式 所以要把剛剛的OpencvUnity的Point包起來丟進去

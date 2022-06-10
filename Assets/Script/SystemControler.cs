@@ -9,6 +9,7 @@ public class SystemControler : MonoBehaviour
     public GameObject WebCam;
     public GameObject WebCam_Mid;
     public GameObject[] Task;
+    public GameObject EyeTracker;
     public int taskLength = 7;
     private int nowTask;
     // Start is called before the first frame update
@@ -41,13 +42,6 @@ public class SystemControler : MonoBehaviour
         {
             WebCam_Mid.SetActive(false);
             WebCam.SetActive(false);
-            PC.SetActive(true);
-        }
-
-        if (Input.GetKeyUp(KeyCode.R))  // ¥ô°È°T®§ + PC + WebCam
-        {
-            WebCam_Mid.SetActive(false);
-            WebCam.SetActive(true);
             PC.SetActive(true);
         }
 
