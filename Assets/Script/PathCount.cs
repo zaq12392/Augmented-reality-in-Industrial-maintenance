@@ -24,9 +24,14 @@ public class PathCount : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.A)) //按下A開始紀錄
+        if (Input.GetKeyUp(KeyCode.A)) //按下A開始紀錄
         {
             InvokeRepeating("Count", 0.1f, 0.3f);
+        }
+
+        if (Input.GetKeyUp(KeyCode.S)) //停止紀錄
+        {
+            CancelInvoke();
         }
 
     }

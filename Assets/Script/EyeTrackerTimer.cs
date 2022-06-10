@@ -17,9 +17,14 @@ public class EyeTrackerTimer : MonoBehaviour, IGazeFocusable
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKeyUp(KeyCode.A))
         {
             flag = 1;
+        }
+
+        if (Input.GetKeyUp(KeyCode.S)) //停止紀錄
+        {
+            flag = 0;
         }
     }
     void timer1()  //每0.1秒為單位計時

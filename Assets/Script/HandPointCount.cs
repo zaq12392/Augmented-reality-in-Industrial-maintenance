@@ -30,6 +30,11 @@ public class HandPointCount : MonoBehaviour
             findHand();
         }
 
+        if (Input.GetKeyUp(KeyCode.S)) //°±¤î¬ö¿ý
+        {
+            CancelInvoke();
+        }
+
 
     }
     
