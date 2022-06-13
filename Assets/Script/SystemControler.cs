@@ -135,5 +135,18 @@ public class SystemControler : MonoBehaviour
                 Task[nowTask].SetActive(true);
             }
         }
+
+        if (Input.GetKeyUp(KeyCode.Keypad8))  //¥ô°È8
+        {
+            nowTask = 7;
+            for (int i = 0; i < taskLength; i++)
+            {
+                if (i != nowTask)
+                {
+                    Task[i].SetActive(false);
+                }
+                Task[nowTask].SetActive(true);
+            }
+        }
     }
 }
