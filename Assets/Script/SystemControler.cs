@@ -10,7 +10,7 @@ public class SystemControler : MonoBehaviour
     public GameObject WebCam_Mid;
     public GameObject[] Task;
     public GameObject EyeTracker;
-    public int taskLength = 7;
+    public int taskLength;
     private int nowTask;
     // Start is called before the first frame update
     void Start()
