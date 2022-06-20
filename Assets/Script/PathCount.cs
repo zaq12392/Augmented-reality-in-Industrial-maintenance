@@ -26,7 +26,7 @@ public class PathCount : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.A)) //按下A開始紀錄
         {
-            InvokeRepeating("Count", 0.1f, 0.3f);
+            InvokeRepeating("Count", 0.1f, 0.1f);
         }
 
         if (Input.GetKeyUp(KeyCode.S)) //停止紀錄

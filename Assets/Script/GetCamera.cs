@@ -116,10 +116,10 @@ public class GetCamera : MonoBehaviour
         OpenCVForUnity.CoreModule.Point[] src_P = { src1, src2, src3, src4};
          
         //dst 是電腦的點  dst1 左上  dst2 左下  dst3 右上 dst4 右下     座標跟小畫家一樣就好 不用XY互換
-        OpenCVForUnity.CoreModule.Point dst1 = new OpenCVForUnity.CoreModule.Point(70, 245);
-        OpenCVForUnity.CoreModule.Point dst2 = new OpenCVForUnity.CoreModule.Point(636, 313);
-        OpenCVForUnity.CoreModule.Point dst3 = new OpenCVForUnity.CoreModule.Point(118, 2);
-        OpenCVForUnity.CoreModule.Point dst4 = new OpenCVForUnity.CoreModule.Point(605, 109);
+        OpenCVForUnity.CoreModule.Point dst1 = new OpenCVForUnity.CoreModule.Point(74, 310);
+        OpenCVForUnity.CoreModule.Point dst2 = new OpenCVForUnity.CoreModule.Point(607, 364);
+        OpenCVForUnity.CoreModule.Point dst3 = new OpenCVForUnity.CoreModule.Point(118, 84);
+        OpenCVForUnity.CoreModule.Point dst4 = new OpenCVForUnity.CoreModule.Point(572, 169);
         OpenCVForUnity.CoreModule.Point[] dst_P = { dst1, dst2, dst3, dst4 };
 
         //getAffineTransform要吃MatOfPoint2f的格式 所以要把剛剛的OpencvUnity的Point包起來丟進去

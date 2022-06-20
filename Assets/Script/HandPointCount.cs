@@ -48,7 +48,7 @@ public class HandPointCount : MonoBehaviour
             users[i].Add(new PositionData() { X = prePos[i].x, Y = prePos[i].y, Z = prePos[i].z }); ; //初始位置放進LIST
         }
         //每0.3秒計一次
-        InvokeRepeating("Count", 0.1f, 0.3f);
+        InvokeRepeating("Count", 0.1f, 0.1f);
     }
     void Count()
     {
